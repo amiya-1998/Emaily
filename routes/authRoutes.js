@@ -8,6 +8,7 @@ module.exports = app => {
     })
   );
 
+  try {
   app.get(
     '/auth/google/callback',
     passport.authenticate('google'),
@@ -15,7 +16,10 @@ module.exports = app => {
       res.redirect('/surveys');
     }
   );
-
+  }
+  catch(e){
+    console.log(e)
+  }
   app.get('/api/logout', (req, res) => {
     req.logout(); // kills the cookie
     res.redirect('/');
