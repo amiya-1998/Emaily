@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
   // If there is a inccoming route request that our express app doesn't understand then just forward it to index.html to see if it gets resolved there --> Kicks the user to the client side application
   const path = require('path');
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve__(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
