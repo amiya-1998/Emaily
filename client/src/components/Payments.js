@@ -5,7 +5,6 @@ import { handleToken } from '../actions';
 
 class Payments extends Component {
   render() {
-    console.log(process.env);
     return (
       <StripeCheckout
         name="Emaily"
