@@ -5,9 +5,12 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Survey');
 require('./services/passport'); // passport.js uses the users model inside it. So we have to require it after the users model has been defined.
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+mongoose
+  .connect(keys.mongoURI, { useNewUrlParser: true })
+  .catch(err => console.log(err));
 
 const app = express();
 
@@ -23,14 +26,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./routes/authRoutes')(app);
-require('./routes/billingRoutes')(app);
+require('./routes/api/authRoutes')(app);
+require('./routes/api/billingRoutes')(app);
+require('./routes/api/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // serve production assets like index.html, main.css file etc
   app.use(express.static('./client/build'));
 
-  // If there is a inccoming route request that our express app doesn't understand then just forward it to index.html to see if it gets resolved there --> Kicks the user to the client side application
+  // If there is a incoming route request that our express app doesn't understand then just forward it to index.html to see if it gets resolved there --> Kicks the user to the client side application
   const path = require('path');
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
